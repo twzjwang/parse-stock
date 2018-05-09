@@ -23,15 +23,22 @@ if __name__ == '__main__':
         
         #parse data
         if index <= 1:
-            ws.cell(row=1, column=2).value = '股票代號'
-            ws.cell(row=1, column=3).value = '成交'
-            ws.cell(row=1, column=3).value = '漲跌'
+            ws.cell(row=1, column=1).value = '股票代號'
+            ws.cell(row=1, column=2).value = '股票名稱'
+            ws.cell(row=1, column=3).value = '成交價'
+            ws.cell(row=1, column=4).value = '漲跌'
             continue
         if str(stock_symbol) == 'None':
             continue
         print(stock_symbol)
         src = requests.get('https://tw.stock.yahoo.com/q/q?s='+str(stock_symbol))
         src = src.text.replace(' ', '')
+        index2 = src.find('</a><br><ahref="')
+        stock_name = src[index2-100:index2]
+        index1 = stock_name.find('<tdalign=centerwidth=105>')
+        stock_name = stock_name[index1+53:len(stock_name)]
+        print(stock_name)
+
         index1 = src.find('加到投資組合</font><br></a></td>')
         index2 = src.find('<tdalign=centerwidth=137class="tt">')
         src = src[index1+27:index2]
@@ -83,8 +90,10 @@ if __name__ == '__main__':
         #print(src[9])
         
         # write xlsx
-        ws.cell(row=index, column=2).value = src[1]
-        ws.cell(row=index, column=3).value = src[4]
+        
+        ws.cell(row=index, column=2).value = stock_name
+        ws.cell(row=index, column=3).value = src[1]
+        ws.cell(row=index, column=4).value = src[4]
 
     wb.save(filename='stock.xlsx')
     
