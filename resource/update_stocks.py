@@ -7,7 +7,7 @@ from openpyxl import load_workbook
 from openpyxl import Workbook
  
 if __name__ == '__main__':
-    wb = load_workbook(filename=r'stock.xlsx')
+    wb = load_workbook(filename=r'stocks.xlsx')
     sheets = wb.get_sheet_names()
     ws = wb.get_sheet_by_name(sheets[0])
 
@@ -95,5 +95,5 @@ if __name__ == '__main__':
         ws.cell(row=index, column=3).value = src[1]
         ws.cell(row=index, column=4).value = src[4]
 
-    wb.save(filename='stock.xlsx')
+    wb.save(filename='stocks.xlsx')
     
